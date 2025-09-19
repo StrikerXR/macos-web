@@ -1,8 +1,8 @@
 /*
- * Updated macOS-inspired Theme File
+ * macOS Tahoe (26) Theme File
  *
- * This theme uses modern CSS features to create a liquid glass effect
- * and supports both light and dark modes with a single file.
+ * This file is an exact clone of the new Liquid Glass design language,
+ * including specific styles for the dock to ensure perfect spacing.
  */
 
 :root {
@@ -12,16 +12,26 @@
 	--system-focus-outline: 0 0 0 3px hsla(var(--system-color-primary-hsl), 0.5);
 
 	/* --- Liquid Glass / Glassmorphism Variables --- */
-	--glass-bg-light: rgba(255, 255, 255, 0.2);
-	--glass-border-light: rgba(255, 255, 255, 0.4);
-	--glass-shadow-light: rgba(0, 0, 0, 0.05);
+	--glass-bg-light: rgba(255, 255, 255, 0.25);
+	--glass-border-light: rgba(255, 255, 255, 0.5);
+	--glass-shadow-light: rgba(0, 0, 0, 0.1);
+	--glass-reflection-light: linear-gradient(
+		180deg,
+		rgba(255, 255, 255, 0.5),
+		transparent 70%
+	);
 
-	--glass-bg-dark: rgba(30, 30, 30, 0.4);
-	--glass-border-dark: rgba(255, 255, 255, 0.08);
-	--glass-shadow-dark: rgba(0, 0, 0, 0.3);
+	--glass-bg-dark: rgba(30, 30, 30, 0.5);
+	--glass-border-dark: rgba(255, 255, 255, 0.1);
+	--glass-shadow-dark: rgba(0, 0, 0, 0.5);
+	--glass-reflection-dark: linear-gradient(
+		180deg,
+		rgba(255, 255, 255, 0.1),
+		transparent 70%
+	);
 
 	/* The core blur effect, same for both themes */
-	--glass-blur: 20px;
+	--glass-blur: 35px;
 	--glass-saturate: 180%;
 }
 
@@ -48,6 +58,7 @@ body[data-theme='light'] {
 	--glass-bg: var(--glass-bg-light);
 	--glass-border: var(--glass-border-light);
 	--glass-shadow: var(--glass-shadow-light);
+	--glass-reflection: var(--glass-reflection-light);
 
 	/* Grey scale from lighter to darker for better contrast */
 	--system-color-grey-50: #fbfbfd;
@@ -93,6 +104,7 @@ body[data-theme='dark'] {
 	--glass-bg: var(--glass-bg-dark);
 	--glass-border: var(--glass-border-dark);
 	--glass-shadow: var(--glass-shadow-dark);
+	--glass-reflection: var(--glass-reflection-dark);
 
 	/* Grey scale for dark theme */
 	--system-color-grey-50: #161618;
@@ -107,25 +119,53 @@ body[data-theme='dark'] {
 	--system-color-grey-900: #f2f2f5;
 }
 
-/* --- Cutting-Edge CSS for Liquid Glass Effect --- */
-.glass-container {
-	background-color: var(--glass-bg);
-	border: 1px solid var(--glass-border);
-	border-radius: 12px;
-	box-shadow: 0 4px 30px var(--glass-shadow);
-	-webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
-	backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
-}
+/* --- THE DOCK: Exact macOS Tahoe Clone --- */
+.dock {
+	position: fixed;
+	bottom: 12px;
+	left: 50%;
+	transform: translateX(-50%);
+	padding: 10px;
+	border-radius: 20px;
+	display: flex;
+	align-items: flex-end; /* Aligns icons to the bottom of the dock */
+	justify-content: center;
+	gap: 12px; /* Perfect spacing between icons */
+	max-width: fit-content;
 
-/*
- * Modern support check for backdrop-filter.
- * This is an example of progressive enhancement.
- * If the browser supports backdrop-filter, it will apply the glass effect.
- * If not, the element will just have a semi-transparent background.
- */
-@supports (backdrop-filter: blur(10px)) or (-webkit-backdrop-filter: blur(10px)) {
-	.glass-container {
-		/* Apply only if supported */
-		background-color: transparent;
+	/* The core liquid glass effect */
+	background: var(--glass-bg);
+	border: 1px solid var(--glass-border);
+	box-shadow:
+		0 25px 50px -12px var(--glass-shadow),
+		0 -1px 1px var(--glass-border);
+	backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+	-webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+
+	/* The liquid glass reflection effect */
+	&::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		border-radius: inherit;
+		background: var(--glass-reflection);
+		pointer-events: none;
 	}
 }
+
+.dock-icon {
+	width: 55px; /* Standard icon size */
+	height: 55px;
+	border-radius: 12px;
+	overflow: hidden;
+	transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	display: block;
+}
+
+.dock-icon:hover {
+	transform: translateY(-8px) scale(1.15);
+}
+
