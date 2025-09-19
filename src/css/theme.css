@@ -1,17 +1,3 @@
-/*
- * New CSS rule for the background wallpaper
- * This sets the Tahoe.png image as the background for the entire page.
- */
-body {
-  background-image: url('/Tahoe.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed; /* This keeps the wallpaper fixed while scrolling, which is a common behavior in macOS */
-}
-
-/* The rest of your original CSS code follows below */
-
 body,
 body[data-theme='light'] {
 	/* // Primary */
